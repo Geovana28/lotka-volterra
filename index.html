@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interactive Lotka-Volterra Predator-Prey Simulator — visualize ecological population dynamics with adjustable parameters.">
+    <title>Predator-Prey Simulator | Ecology Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <div class="logo-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+                        <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                        <line x1="9" y1="9" x2="9.01" y2="9"/>
+                        <line x1="15" y1="9" x2="15.01" y2="9"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1>Predator — Prey</h1>
+                    <p class="subtitle">Lotka-Volterra Ecology Simulator</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <span class="badge badge-prey">🐇 Prey</span>
+                <span class="badge badge-predator">🐺 Predator</span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Charts Section -->
+            <section class="charts-section">
+                <!-- Population over time -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h2 class="chart-title">Population Over Time</h2>
+                        <div class="chart-legend">
+                            <span class="legend-item legend-prey"><span class="legend-dot"></span> Prey (Rabbits)</span>
+                            <span class="legend-item legend-predator"><span class="legend-dot"></span> Predators (Wolves)</span>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="timeChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Phase Portrait -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h2 class="chart-title">Phase Portrait</h2>
+                        <span class="chart-badge">Prey × Predator orbit</span>
+                    </div>
+                    <div class="chart-wrapper chart-wrapper-square">
+                        <canvas id="phaseChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Controls Sidebar -->
+            <aside class="controls-panel">
+                <!-- Scenario Presets -->
+                <div class="control-group">
+                    <h3 class="control-title">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7"/>
+                            <rect x="14" y="3" width="7" height="7"/>
+                            <rect x="3" y="14" width="7" height="7"/>
+                            <rect x="14" y="14" width="7" height="7"/>
+                        </svg>
+                        Scenarios
+                    </h3>
+                    <div class="preset-grid" id="presetGrid">
+                        <button class="preset-btn active" data-preset="classic"
+                            data-prey="80" data-pred="30"
+                            data-alpha="0.5" data-beta="0.02" data-delta="0.01" data-gamma="0.4">
+                            <span class="preset-emoji">⚖️</span>
+                            <span class="preset-name">Classic Balance</span>
+                        </button>
+                        <button class="preset-btn" data-preset="boom"
+                            data-prey="200" data-pred="10"
+                            data-alpha="0.8" data-beta="0.01" data-delta="0.005" data-gamma="0.3">
+                            <span class="preset-emoji">💥</span>
+                            <span class="preset-name">Prey Boom</span>
+                        </button>
+                        <button class="preset-btn" data-preset="extinction"
+                            data-prey="30" data-pred="80"
+                            data-alpha="0.3" data-beta="0.03" data-delta="0.015" data-gamma="0.2">
+                            <span class="preset-emoji">💀</span>
+                            <span class="preset-name">Near Extinction</span>
+                        </button>
+                        <button class="preset-btn" data-preset="chaos"
+                            data-prey="100" data-pred="50"
+                            data-alpha="1.0" data-beta="0.025" data-delta="0.02" data-gamma="0.8">
+                            <span class="preset-emoji">🌀</span>
+                            <span class="preset-name">Wild Swings</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Initial Populations -->
+                <div class="control-group">
+                    <h3 class="control-title">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                        Initial Populations
+                    </h3>
+
+                    <div class="slider-control slider-prey">
+                        <div class="slider-header">
+                            <label for="preySlider">🐇 Prey</label>
+                            <span class="slider-value" id="preyValue">80</span>
+                        </div>
+                        <input type="range" id="preySlider" min="5" max="500" value="80" step="1">
+                        <div class="slider-range"><span>5</span><span>500</span></div>
+                    </div>
+
+                    <div class="slider-control slider-predator">
+                        <div class="slider-header">
+                            <label for="predSlider">🐺 Predators</label>
+                            <span class="slider-value" id="predValue">30</span>
+                        </div>
+                        <input type="range" id="predSlider" min="1" max="200" value="30" step="1">
+                        <div class="slider-range"><span>1</span><span>200</span></div>
+                    </div>
+                </div>
+
+                <!-- Rate Parameters -->
+                <div class="control-group">
+                    <h3 class="control-title">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="4" y1="21" x2="4" y2="14"/>
+                            <line x1="4" y1="10" x2="4" y2="3"/>
+                            <line x1="12" y1="21" x2="12" y2="12"/>
+                            <line x1="12" y1="8" x2="12" y2="3"/>
+                            <line x1="20" y1="21" x2="20" y2="16"/>
+                            <line x1="20" y1="12" x2="20" y2="3"/>
+                        </svg>
+                        Rate Parameters
+                    </h3>
+
+                    <div class="slider-control slider-prey">
+                        <div class="slider-header">
+                            <label for="alphaSlider">α — Prey growth rate</label>
+                            <span class="slider-value" id="alphaValue">0.50</span>
+                        </div>
+                        <input type="range" id="alphaSlider" min="0.05" max="2.0" value="0.5" step="0.01">
+                        <div class="slider-range"><span>0.05</span><span>2.0</span></div>
+                    </div>
+
+                    <div class="slider-control slider-danger">
+                        <div class="slider-header">
+                            <label for="betaSlider">β — Predation rate</label>
+                            <span class="slider-value" id="betaValue">0.020</span>
+                        </div>
+                        <input type="range" id="betaSlider" min="0.001" max="0.1" value="0.02" step="0.001">
+                        <div class="slider-range"><span>0.001</span><span>0.1</span></div>
+                    </div>
+
+                    <div class="slider-control slider-predator">
+                        <div class="slider-header">
+                            <label for="deltaSlider">δ — Predator growth from eating</label>
+                            <span class="slider-value" id="deltaValue">0.010</span>
+                        </div>
+                        <input type="range" id="deltaSlider" min="0.001" max="0.05" value="0.01" step="0.001">
+                        <div class="slider-range"><span>0.001</span><span>0.05</span></div>
+                    </div>
+
+                    <div class="slider-control slider-danger">
+                        <div class="slider-header">
+                            <label for="gammaSlider">γ — Predator death rate</label>
+                            <span class="slider-value" id="gammaValue">0.40</span>
+                        </div>
+                        <input type="range" id="gammaSlider" min="0.05" max="1.5" value="0.4" step="0.01">
+                        <div class="slider-range"><span>0.05</span><span>1.5</span></div>
+                    </div>
+                </div>
+
+                <!-- Simulation Info -->
+                <div class="control-group">
+                    <h3 class="control-title">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                        </svg>
+                        Simulation Stats
+                    </h3>
+                    <div class="stats-grid">
+                        <div class="stat-card stat-prey">
+                            <span class="stat-label">Peak Prey</span>
+                            <span class="stat-value" id="statPeakPrey">—</span>
+                        </div>
+                        <div class="stat-card stat-predator">
+                            <span class="stat-label">Peak Predators</span>
+                            <span class="stat-value" id="statPeakPred">—</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-label">Min Prey</span>
+                            <span class="stat-value" id="statMinPrey">—</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-label">Min Predators</span>
+                            <span class="stat-value" id="statMinPred">—</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-label">Cycle Period</span>
+                            <span class="stat-value" id="statPeriod">—</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-label">Equilibrium</span>
+                            <span class="stat-value" id="statEquilibrium">—</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Equations -->
+                <div class="control-group equation-group">
+                    <h3 class="control-title">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                        </svg>
+                        Equations
+                    </h3>
+                    <div class="equation-box">
+                        <div class="equation eq-prey">dx/dt = αx − βxy</div>
+                        <div class="equation-label">Prey: grows naturally, eaten by predators</div>
+                        <div class="equation eq-predator">dy/dt = δxy − γy</div>
+                        <div class="equation-label">Predators: grow by eating, die naturally</div>
+                    </div>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
