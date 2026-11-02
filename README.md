@@ -4,15 +4,19 @@ Simulação ecológica interativa de dinâmica populacional usando o modelo clá
 
 ## 🚀 Funcionalidades
 
-- **Constante de Movimento (Invariante de Lyapunov / Primeira Integral)** — Verificação numérica estrita da conservação de energia do sistema orbital conservativo.
-- **Resposta Funcional de Holling Tipo II (Saturação)** — Modelagem biológica realista onde predadores possuem tempo de manipulação (*handling time*), prevenindo taxas irreais de predação infinita.
-- **Estocasticidade Demográfica por Difusão de Itô** — Flutuações randômicas ambientais nos coeficientes vitais.
+- **Sistema clássico de Lotka-Volterra** integrado numericamente, com parâmetros α, β, γ, δ ajustáveis.
 - **Retrato de Fase Orbital Espaço-Temporal** — Trajetórias fechadas em torno do ponto fixo não-trivial $(\gamma/\delta, \alpha/\beta)$.
 - **4 Cenários Clássicos** — Equilíbrio Coexistente, Explosão Populacional, Quase-Extinção e Ciclo Limite.
 
 ## 🧮 Modelagem Matemática & Dinâmica Não-Linear
 
-### 1. Sistema Não-Linear com Resposta de Holling Tipo II
+### 1. Sistema clássico (implementado)
+
+$$\frac{dx}{dt} = \alpha x - \beta x y, \qquad \frac{dy}{dt} = \delta x y - \gamma y$$
+
+> 🗺️ **Roadmap (não implementado):** extensão com capacidade de suporte $K$ e resposta funcional de Holling Tipo II, verificação numérica da primeira integral $V(x,y)$ e ruído estocástico de Itô.
+
+### [Roadmap] Sistema Não-Linear com Resposta de Holling Tipo II
 
 $$\begin{aligned}
 \frac{dx}{dt} &= \alpha x \left(1 - \frac{x}{K}\right) - \frac{\beta x y}{1 + a x} \\
